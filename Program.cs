@@ -9,11 +9,15 @@ namespace csharpdemo
     {
 
         public static SocketIO client = null;
+        public static String cloudhookHost = "http://cloudhook:3000";
 
         public static void Main(string[] args)
         {
             //TODO: Write a proper argument parser so the server address and other
             //Useful params can be configured without recompile.
+            if (null != Environment.GetEnvironmentVariable("CLOUDHOOK_HOST")) {
+                cloudhookHost = Environment.GetEnvironmentVariable("CLOUDHOOK_HOST");
+            }
             startClient(args);
             do {
                 Thread.Sleep(5000);
@@ -22,7 +26,7 @@ namespace csharpdemo
 
         async static void startClient(string[] hooks)
         {
-            client = new SocketIO("http://localhost:3000/", new SocketIOOptions
+            client = new SocketIO(cloudhookHost, new SocketIOOptions
             {
                 EIO = 4
             });
